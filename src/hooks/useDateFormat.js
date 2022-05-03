@@ -7,7 +7,7 @@ export const useDateFormat = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDate(formatDate(new Date()))
-    }, 1_000)
+    }, 1000)
     return () => {
       clearTimeout(timeout)
     }

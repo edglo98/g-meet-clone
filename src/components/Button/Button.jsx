@@ -7,7 +7,14 @@ export function Button (props) {
   }
 
   return (
-    <button className={`${styles.button} ${styleType[props.type || 'contained']}`} disabled={props.disabled}>
+    <button
+      className={`
+        ${styles.button} 
+        ${styleType[props.type || 'contained']} 
+        ${props.buttonClassName}
+      `}
+      disabled={props.disabled}
+    >
       {props.title}
     </button>
   )
