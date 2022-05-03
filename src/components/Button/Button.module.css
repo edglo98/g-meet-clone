@@ -1,0 +1,41 @@
+.button {
+  cursor: pointer;
+  border: none;
+  padding: .8rem .6rem;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+}
+
+.text {
+  color: var(--midu-azul);
+}
+
+.text:hover {
+  color: var(--midu-dark);
+}
+
+.text:disabled {
+  color: var(--dark-main);
+}
+
+.contained {
+  background-color: var(--midu-azul);
+  color: var(--white);
+}
+
+.contained:hover {
+  background-color: var(--midu-dark);
+}
+
+.contained:disabled {
+  background-color: var(--dark-main);
+  color: var(--white);
+}

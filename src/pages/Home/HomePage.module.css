@@ -1,0 +1,32 @@
+.highlightText {
+  color: var(--dark-highlight);
+  font-weight: 450;
+  font-size: 2.8rem;
+  text-align: center;
+  margin: .4rem 0;
+  max-width: 100%;
+}
+
+.description {
+  color: var(--dark-main);
+  font-size: 1.2rem;
+  text-align: center;
+  margin: .4rem 0;
+  display: block;
+  max-width: 100%;
+  margin-bottom: 2rem;
+}
+
+.descContainer {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.meetingOptions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .8rem;
+  align-items: center;
+  justify-content: center;
+}
