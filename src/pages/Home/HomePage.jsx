@@ -39,20 +39,26 @@ export function HomePage () {
           Hemos rediseñado nuestro servicio de reuniones seguras para empresas, Edglo Meet, para que todo el mundo pueda usarlo de forma gratuita.
         </span>
         <div className={styles.meetingOptions}>
-          <Dropdown>
+          <Dropdown
+            title={
+              <h3 style={{ margin: 0 }}>
+                📹 Nueva reunión
+              </h3>
+            }
+          >
             <DropdownItem
               onClick={() => {}}
-              title='🔗   Crear una reunión para más tarde'
+              title={<h4 style={{ margin: 0 }}>🔗   Crear una reunión para más tarde</h4>}
               disabled
             />
             <DropdownItem
               onClick={createMeetings}
-              title='➕   Iniciar una reunión ahora'
+              title={<h4 style={{ margin: 0 }}>➕   Iniciar una reunión ahora</h4>}
               disabled={false}
             />
             <DropdownItem
               onClick={() => {}}
-              title='🗓   Programar en Google Calendar'
+              title={<h4 style={{ margin: 0 }}>🗓   Programar en Google Calendar</h4>}
               disabled
             />
           </Dropdown>

@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from './firebaseConfig'
 
@@ -20,7 +20,7 @@ export const getUserData = async (uid) => {
 }
 
 export const loginWithEmail = async (email, password) => {
-  const userCredential = await auth.signInWithEmailAndPassword(email, password)
+  const userCredential = await signInWithEmailAndPassword(auth, email, password)
   const { uid } = userCredential.user
   const user = await getUserData(uid)
   return user.data()

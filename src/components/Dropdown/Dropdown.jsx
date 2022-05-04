@@ -3,17 +3,19 @@ import { Fragment } from 'react'
 import { Button } from '../Button/Button'
 import styles from './Dropdown.module.css'
 
-export function Dropdown ({ children }) {
+export function Dropdown ({ children, title, buttonStyle, position }) {
+  const itemsPosition = {
+    top: styles.top,
+    bottom: styles.bottom
+  }
+
   return (
     <Menu as='div' className={styles.dropdownContainer}>
       <div>
         <Menu.Button as='div' style={{ padding: 0, margin: 0, border: 'none', borderRadius: 5 }}>
           <Button
-            title={
-              <h3 style={{ margin: 0 }}>
-                📹 Nueva reunión
-              </h3>
-            }
+            styleType={buttonStyle || 'contained'}
+            title={title}
           />
         </Menu.Button>
       </div>
@@ -26,7 +28,7 @@ export function Dropdown ({ children }) {
         leaveFrom={styles.leaveFrom}
         leaveTo={styles.leaveTo}
       >
-        <Menu.Items className={styles.menuItemsContainer}>
+        <Menu.Items className={`${styles.menuItemsContainer} ${itemsPosition[position || 'top']}`}>
           {children}
         </Menu.Items>
       </Transition>
@@ -42,11 +44,7 @@ export function DropdownItem ({ onClick, title, disabled }) {
         buttonClassName={`${styles.item} ${disabled && styles.disabledItem}`}
         onClick={onClick}
         disabled={disabled}
-        title={
-          <h4 style={{ margin: 0 }}>
-            {title}
-          </h4>
-        }
+        title={title}
       />
     </Menu.Item>
   )

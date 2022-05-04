@@ -13,17 +13,21 @@ export function AuthProvider ({ children }) {
 
   useEffect(() => {
     const setValue = async (value) => {
-      const user = await getUserData(value.uid)
-      setIsLoading(false)
-      setUser(user.data())
-      setIsLoggedIn(!value)
       setError(null)
+      if (value) {
+        const user = await getUserData(value.uid)
+        setUser(user.data())
+        setIsLoggedIn(true)
+      } else {
+        setIsLoggedIn(false)
+      }
+      setIsLoading(false)
     }
     const setErrorValue = (error) => {
-      setIsLoading(false)
+      setError(error)
       setUser(undefined)
       setIsLoggedIn(false)
-      setError(error)
+      setIsLoading(false)
     }
     return verifyUserAuth(setValue, setErrorValue)
   }, [auth])
@@ -43,9 +47,12 @@ export function AuthProvider ({ children }) {
     setIsLoading(true)
     try {
       const userData = await loginWithEmail(email, password)
+      console.log('userdata', userData)
       setUser(userData)
     } catch (error) {
+      console.log('error', error)
       setError(error)
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -53,6 +60,8 @@ export function AuthProvider ({ children }) {
 
   const logout = async () => {
     await signOutUser()
+    setUser(null)
+    setIsLoggedIn(false)
   }
 
   const openModal = () => {

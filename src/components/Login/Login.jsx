@@ -2,17 +2,22 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '../Button/Button'
-import { InputAlert } from '../InputAlert/InputAlert'
 import { Modal } from '../Modal/Modal'
 import { TextInput } from '../TextInput/TextInput'
 import styles from './Login.module.css'
 
 export function Login () {
-  const { modalOpen, actions } = useAuth()
+  const { isLoading, modalOpen, actions } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [isRegister, setIsRegister] = useState(false)
 
-  const onSubmit = data => console.log(data)
+  const onSubmit = data => {
+    console.log(data)
+    actions.login(data.email, data.password).then(() => {
+      actions.closeModal()
+      console.log('login')
+    })
+  }
 
   const openRegister = () => {
     actions.closeModal()
@@ -37,6 +42,7 @@ export function Login () {
           />
           <TextInput
             placeholder='Contraseña'
+            password
             icon='🔒'
             register={register('password', { required: true })}
             error={errors.password && 'This field is required'}
@@ -46,7 +52,7 @@ export function Login () {
           />
         </form>
         <div style={{ textAlign: 'center' }}>
-          <Button onClick={openRegister} title='Resgistrate aquí' styleType='text' />
+          <Button disabled={isLoading} onClick={openRegister} title='Resgistrate aquí' styleType='text' />
         </div>
       </Modal>
     </>
@@ -54,8 +60,20 @@ export function Login () {
 }
 
 const Register = ({ isOpen, onClose, onBack }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const onSubmit = data => console.log(data)
+  const { register, handleSubmit, formState: { errors }, setError } = useForm()
+  const { isLoading, actions } = useAuth()
+
+  const onSubmit = data => {
+    if (data.password !== data.password2) {
+      setError('password2', { type: 'manual', message: 'Las contraseñas no coinciden' })
+      setError('password', { type: 'manual', message: 'Las contraseñas no coinciden' })
+      return
+    }
+    const { password2, ...sigupData } = data
+    actions.signUp(sigupData).then(() => {
+      onClose()
+    })
+  }
 
   return (
     <Modal
@@ -95,19 +113,22 @@ const Register = ({ isOpen, onClose, onBack }) => {
         />
         <TextInput
           placeholder='Contraseña'
+          password
           icon='🔒'
           register={register('password', { required: true })}
-          error={errors.password && 'This field is required'}
+          error={errors.password && (errors.password.message || 'This field is required')}
         />
         <TextInput
           placeholder='Contraseña'
+          password
           icon='🔒'
           register={register('password2', { required: true })}
-          error={errors.password2 && 'This field is required'}
+          error={errors.password2 && (errors.password2.message || 'This field is required')}
         />
         <Button
           type='submit'
           title='Crear cuenta'
+          disabled={isLoading}
         />
       </form>
     </Modal>

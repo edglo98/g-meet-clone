@@ -2,7 +2,7 @@ import { InputAlert } from '../InputAlert/InputAlert'
 import styles from './TextInput.module.css'
 
 export function TextInput (props) {
-  const { error, icon, placeholder, value, onChange, register } = props
+  const { password, error, icon, placeholder, value, onChange, register } = props
   return (
     <div>
       <label className={styles.inputContainer}>
@@ -14,7 +14,7 @@ export function TextInput (props) {
           )
         }
         <input
-          type='text'
+          type={password ? 'password' : 'text'}
           className={styles.input}
           placeholder={placeholder}
           value={value}

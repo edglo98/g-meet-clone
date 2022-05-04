@@ -1,11 +1,16 @@
 import { useAuth } from '../../hooks/useAuth'
 import { useDateFormat } from '../../hooks/useDateFormat'
 import { Button } from '../Button/Button'
+import { Dropdown, DropdownItem } from '../Dropdown/Dropdown'
 import styles from './Header.module.css'
 
 export function Header () {
   const { user, actions } = useAuth()
   const date = useDateFormat()
+
+  const logout = async () => {
+    await actions.logout()
+  }
 
   return (
     <div>
@@ -23,7 +28,18 @@ export function Header () {
           </h3>
           {
             user
-              ? <h5>Bienvenido {user.name}</h5>
+              ? (
+                <Dropdown
+                  title={<h5 style={{ margin: 0 }}>{user.name}</h5>}
+                  buttonStyle='text'
+                  position='bottom'
+                >
+                  <DropdownItem
+                    onClick={logout}
+                    title={<h5 style={{ margin: 0, color: 'brown' }}>Cerrar sesión</h5>}
+                  />
+                </Dropdown>
+                )
               : <Button onClick={() => actions.openModal()} title={<h3 style={{ margin: 0 }}>Iniciar sesión</h3>} />
           }
         </div>
