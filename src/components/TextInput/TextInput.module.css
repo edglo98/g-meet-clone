@@ -28,6 +28,10 @@
   border-radius: 5px;
 }
 
+.error {
+  border: 1px solid brown;
+}
+
 .input:focus + .highlighting {
   border: 2px solid var(--midu-azul);
 }

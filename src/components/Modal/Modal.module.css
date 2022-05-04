@@ -1,0 +1,97 @@
+.modalContainer {
+  position: relative;
+  z-index: 11;
+}
+
+.enterBack {
+  transition: opacity .3s ease-out;
+}
+
+.enterFromBack {
+  opacity: 0;
+}
+
+.enterToBack {
+  opacity: 1;
+}
+
+.leaveBack {
+  transition: opacity .3s ease-in;
+}
+
+.leaveFromBack {
+  opacity: 1;
+}
+
+.leaveToBack {
+  opacity: 0;
+}
+
+.back {
+  position: fixed; 
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; 
+  background-color: #00000088;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.modalContent {
+  display: flex;
+  min-height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+  text-align: center;
+}
+
+.panelEnter {
+  transition: transform .3s ease-out, opacity .3s ease-out;
+}
+
+.panelEnterFrom {
+  transform: scale(.95);
+  opacity: 0;
+}
+
+.panelEnterTo {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.panelLeave {
+  transition: transform .3s ease-in, opacity .3s ease-in;
+}
+
+.panelLeaveFrom {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.panelLeaveTo {
+  transform: scale(.95);
+  opacity: 0;
+}
+
+.panel {
+  overflow: hidden; 
+  padding: 1.5rem; 
+  background-color: #ffffff; 
+  transition-property: all; 
+  text-align: left; 
+  vertical-align: middle; 
+  width: 100%; 
+  max-width: 28rem; 
+  border-radius: 1rem; 
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+}

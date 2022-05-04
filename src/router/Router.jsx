@@ -7,7 +7,7 @@ export function Router () {
     <div>
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='about' element={<LobbyPage />} />
+        <Route path='/:id' element={<LobbyPage />} />
       </Routes>
     </div>
   )

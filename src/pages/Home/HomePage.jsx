@@ -1,20 +1,36 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { uid } from 'uid'
 import { Button } from '../../components/Button/Button'
 import { Divider } from '../../components/Divider/Divider'
 import { Dropdown, DropdownItem } from '../../components/Dropdown/Dropdown'
 import { Header } from '../../components/Header/Header'
+import { Login } from '../../components/Login/Login'
 import { TextInput } from '../../components/TextInput/TextInput'
+import { useAuth } from '../../hooks/useAuth'
 import styles from './HomePage.module.css'
 
 export function HomePage () {
+  const { user, actions } = useAuth()
   const [value, setValue] = useState('')
+  const navigate = useNavigate()
 
   const onChange = (e) => {
     setValue(e.target.value)
   }
 
+  const createMeetings = () => {
+    if (!user) {
+      actions.openModal()
+      return
+    }
+    const meetingId = uid()
+    navigate(`/${meetingId}`)
+  }
+
   return (
     <div>
+      <Login />
       <Header />
       <section className={styles.descContainer}>
         <h1 className={styles.highlightText}>Videollamadas Premium.</h1>
@@ -30,7 +46,7 @@ export function HomePage () {
               disabled
             />
             <DropdownItem
-              onClick={() => {}}
+              onClick={createMeetings}
               title='➕   Iniciar una reunión ahora'
               disabled={false}
             />
@@ -41,14 +57,19 @@ export function HomePage () {
             />
           </Dropdown>
           <div style={{ maxWidth: 350, display: 'flex' }}>
-            <TextInput onChange={onChange} placeholder='Introduce un código o enlace' />
+            <TextInput
+              onChange={onChange}
+              placeholder='Introduce un código o enlace'
+              value={value}
+              icon='⌨️'
+            />
             <Button
               title={
                 <h4 style={{ margin: 0 }}>
                   Entrar
                 </h4>
               }
-              type='text'
+              styleType='text'
               disabled={!value}
             />
           </div>

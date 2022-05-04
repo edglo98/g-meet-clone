@@ -36,9 +36,9 @@ export function Dropdown ({ children }) {
 
 export function DropdownItem ({ onClick, title, disabled }) {
   return (
-    <Menu.Item>
+    <Menu.Item as='div'>
       <Button
-        type='text'
+        styleType='text'
         buttonClassName={`${styles.item} ${disabled && styles.disabledItem}`}
         onClick={onClick}
         disabled={disabled}
