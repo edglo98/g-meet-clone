@@ -25,6 +25,7 @@ export function HomePage () {
       return
     }
     const meetingId = uid()
+    // create token for video call
     navigate(`/${meetingId}`)
   }
 

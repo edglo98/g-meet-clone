@@ -47,7 +47,6 @@ export function AuthProvider ({ children }) {
     setIsLoading(true)
     try {
       const userData = await loginWithEmail(email, password)
-      console.log('userdata', userData)
       setUser(userData)
     } catch (error) {
       console.log('error', error)

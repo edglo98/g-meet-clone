@@ -12,10 +12,8 @@ export function Login () {
   const [isRegister, setIsRegister] = useState(false)
 
   const onSubmit = data => {
-    console.log(data)
     actions.login(data.email, data.password).then(() => {
       actions.closeModal()
-      console.log('login')
     })
   }
 
