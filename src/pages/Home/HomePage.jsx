@@ -8,6 +8,7 @@ import { Header } from '../../components/Header/Header'
 import { Login } from '../../components/Login/Login'
 import { TextInput } from '../../components/TextInput/TextInput'
 import { useAuth } from '../../hooks/useAuth'
+import { getTwilioToken } from '../../services/token'
 import styles from './HomePage.module.css'
 
 export function HomePage () {
@@ -19,14 +20,19 @@ export function HomePage () {
     setValue(e.target.value)
   }
 
-  const createMeetings = () => {
+  const createMeetings = async () => {
     if (!user) {
       actions.openModal()
       return
     }
     const meetingId = uid()
-    // create token for video call
-    navigate(`/${meetingId}`)
+    const { accessToken } = await getTwilioToken(user.uid, meetingId)
+
+    navigate(`/${meetingId}`, {
+      state: {
+        meetingToken: accessToken
+      }
+    })
   }
 
   return (

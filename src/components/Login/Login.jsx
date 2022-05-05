@@ -47,10 +47,16 @@ export function Login () {
           />
           <Button
             title='Iniciart sesión'
+            disabled={isLoading}
           />
         </form>
         <div style={{ textAlign: 'center' }}>
-          <Button disabled={isLoading} onClick={openRegister} title='Resgistrate aquí' styleType='text' />
+          <Button
+            disabled={isLoading}
+            onClick={openRegister}
+            title='Resgistrate aquí'
+            styleType='text'
+          />
         </div>
       </Modal>
     </>
