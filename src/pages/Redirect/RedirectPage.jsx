@@ -1,41 +1,21 @@
-import { useCallback, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { getRoom } from '../../services/token'
+import { useAuth } from '../../hooks/useAuth'
+import { useConnectToRoom } from '../../hooks/useConnectToRoom'
 import { LobbyPage } from '../Lobby/LobbyPage'
 import { MeetingPage } from '../Meeting/MeetingPage'
 
 export function RedirectPage () {
   const { meetingId } = useParams()
   const { state } = useLocation()
-  const [room, setRoom] = useState(null)
-  const [meetingToken, setMeetingToken] = useState(state?.meetingToken || null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const { isLoading: loadingAuthData } = useAuth()
+  const { loading, setMeetingToken, room } = useConnectToRoom({
+    meetingId,
+    defaultMeetingToken: state?.meetingToken
+  })
 
-  const connectToRoom = useCallback(async () => {
-    if (meetingToken) {
-      setLoading(true)
-      setError(null)
-      try {
-        const room = await getRoom(meetingToken, meetingId)
-        setRoom(room)
-      } catch (error) {
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      setLoading(false)
-    }
-  }, [meetingToken])
+  // TODO: useEffect for redirect to error handler page
 
-  useEffect(() => {
-    connectToRoom()
-  }, [connectToRoom])
-
-  // useEffect for redirect to error handler page
-
-  if (loading) {
+  if (loading || loadingAuthData) {
     return <div>Loading...</div>
   } else if (room) {
     return <MeetingPage room={room} />

@@ -8,13 +8,14 @@ import { Header } from '../../components/Header/Header'
 import { Login } from '../../components/Login/Login'
 import { TextInput } from '../../components/TextInput/TextInput'
 import { useAuth } from '../../hooks/useAuth'
-import { getTwilioToken } from '../../services/token'
+import { useTwilioToken } from '../../hooks/useTwilioToken'
 import styles from './HomePage.module.css'
 
 export function HomePage () {
   const { user, actions } = useAuth()
   const [value, setValue] = useState('')
   const navigate = useNavigate()
+  const { loading, handleGetToken } = useTwilioToken()
 
   const onChange = (e) => {
     setValue(e.target.value)
@@ -26,11 +27,11 @@ export function HomePage () {
       return
     }
     const meetingId = uid()
-    const { accessToken } = await getTwilioToken(user.uid, meetingId)
+    const token = await handleGetToken(user.uid, meetingId)
 
     navigate(`/${meetingId}`, {
       state: {
-        meetingToken: accessToken
+        meetingToken: token
       }
     })
   }
@@ -61,7 +62,7 @@ export function HomePage () {
             <DropdownItem
               onClick={createMeetings}
               title={<h4 style={{ margin: 0 }}>➕   Iniciar una reunión ahora</h4>}
-              disabled={false}
+              disabled={loading}
             />
             <DropdownItem
               onClick={() => {}}

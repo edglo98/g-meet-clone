@@ -1,103 +1,87 @@
-import { useEffect, useRef, useState } from 'react'
 import { Button } from '../Button/Button'
 import { Listbox } from '../Listbox/Listbox'
+import { TextInput } from '../TextInput/TextInput'
+import { useMediaConfig } from '../../hooks/useMediaConfig'
+import { useAuth } from '../../hooks/useAuth'
+import { useSimpleInput } from '../../hooks/useSimpleInput'
 import styles from './UserConfig.module.css'
+import { useNavigate } from 'react-router-dom'
+import { uid } from 'uid'
+import { useTwilioToken } from '../../hooks/useTwilioToken'
 
-const INITIAL_DEVICES_FILTERS = {
-  cameras: [],
-  microphones: [],
-  speakers: []
-}
-
-export const UserConfig = () => {
-  const [devices, setDevices] = useState(() => INITIAL_DEVICES_FILTERS)
-
-  const videoRef = useRef()
-  const audioRef = useRef()
-
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: { width: 340 } })
-      .then(stream => {
-        const video = videoRef.current
-        video.srcObject = stream
-        video.play()
-      })
-      .catch(err => {
-        console.error('error:', err)
-      })
+export const UserConfig = ({ setMeetingToken, meetingId }) => {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const {
+    refs,
+    actions,
+    mediaDevices,
+    isAudioTesting,
+    isVideoActive,
+    isMicActive
+  } = useMediaConfig()
+  const { value, handleChange } = useSimpleInput(user?.name || '')
+  const { loading, handleGetToken } = useTwilioToken()
+  const handleCreateToken = async () => {
+    const userIdentity = user ? user.uid : uid()
+    const token = await handleGetToken(userIdentity, meetingId)
+    setMeetingToken(token)
   }
-
-  const getAudio = () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then(stream => {
-        const audio = audioRef.current
-        audio.srcObject = stream
-        audio.play()
-      })
-      .catch(err => {
-        console.error('error:', err)
-      })
-  }
-
-  useEffect(() => {
-    getVideo()
-  }, [videoRef])
-
-  useEffect(() => {
-    getAudio()
-  }, [audioRef])
-
-  useEffect(() => {
-    const getDivices = (devices) => {
-      const devicesFiltered = { ...INITIAL_DEVICES_FILTERS }
-      devices.forEach(device => {
-        device.id = device.deviceId
-        if (device.kind === 'videoinput') {
-          devicesFiltered.cameras = [...devicesFiltered.cameras, device]
-        } else if (device.kind === 'audioinput') {
-          devicesFiltered.microphones = [...devicesFiltered.microphones, device]
-        } else if (device.kind === 'audiooutput') {
-          devicesFiltered.speakers = [...devicesFiltered.speakers, device]
-        }
-      })
-
-      setDevices(devicesFiltered)
-    }
-
-    navigator.mediaDevices.enumerateDevices().then(getDivices)
-  }, [setDevices])
 
   return (
     <div className={styles.configContainer}>
-      <section style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <figure>
-          <video style={{ borderRadius: 10 }} ref={videoRef} autoPlay />
-          <audio ref={audioRef} autoPlay muted />
+      <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <figure name='Edgar Lopez' className={styles.figureFallback}>
+          <video style={{ opacity: isVideoActive ? 1 : 0, borderRadius: 10, width: 440, aspectRatio: '3/2', objectFit: 'cover', backgroundColor: 'black' }} ref={refs.video} autoPlay />
+          <audio ref={refs.mic} autoPlay muted />
+          <div className={styles.figureButtonsContainer}>
+            <button className={`${styles.figureButtons} ${isMicActive || styles.figureButtonsDesactivate}`} onClick={() => actions.toggleActiveMic()}>
+              📞
+            </button>
+            <button className={`${styles.figureButtons} ${isVideoActive || styles.figureButtonsDesactivate}`} onClick={() => actions.toggleActiveVideo()}>
+              📹
+            </button>
+          </div>
         </figure>
       </section>
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '.6rem', width: 320 }}>
+      <section style={{ display: 'flex', flexDirection: 'column', gap: '.6rem', width: 320, justifyContent: 'center' }}>
         <header>
           <h1 style={{ textAlign: 'center' }}>¿Todo listo para unirte?</h1>
           <h4 style={{ fontWeight: 400, textAlign: 'center' }}>Midu podría estar esperandote...</h4>
         </header>
         <div>
-          <h5 style={{ margin: 0 }}>Micrófono</h5>
-          <Listbox options={devices.microphones} />
+          {/* este es el nombre, hay que generar un id anonimo para que se pueda unir */}
+          <TextInput icon='🏷' placeholder='Tu nombre' value={value} onChange={handleChange} />
         </div>
         <div>
-          <h5 style={{ margin: 0 }}>Altavoces</h5>
-          <Listbox options={devices.speakers} />
+          <h5 style={{ margin: 0 }}>Micrófono</h5>
+          {mediaDevices.microphones.length > 0 && <Listbox options={mediaDevices.microphones} onChange={(value) => actions.setUpMic(value)} />}
         </div>
         <div>
           <h5 style={{ margin: 0 }}>Cámara</h5>
-          <Listbox options={devices.cameras} />
+          {mediaDevices.cameras.length > 0 && <Listbox options={mediaDevices.cameras} onChange={(value) => actions.setUpVideo(value)} />}
+        </div>
+        <div>
+          <h5 style={{ margin: 0 }}>Altavoz</h5>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1 }}>
+              {mediaDevices.speakers.length > 0 && <Listbox options={mediaDevices.speakers} onChange={(value) => actions.setUpSpeaker(value)} />}
+            </div>
+            <Button
+              onClick={() => actions.toggleTestingAudio()}
+              title={
+                <span style={{ margin: 0, fontSize: '.8rem' }}>
+                  {isAudioTesting ? '🔇' : '🔊'}
+                </span>
+                  }
+              styleType='text'
+            />
+          </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <Button title='Volver al inicio' styleType='text' />
-          {/* perdoname si ves esto midu xd */}
-          <Button title={<h4 style={{ margin: 0 }}>🛎 &nbsp;Unirme ahora</h4>} />
+          <Button onClick={() => navigate('/')} title='Volver al inicio' styleType='text' />
+          {/* perdoname si ves el &nbsp; midu xd u otra cosa... */}
+          <Button disabled={loading} onClick={handleCreateToken} title={<h4 style={{ margin: 0 }}>🛎 &nbsp;Unirme ahora</h4>} />
         </div>
       </section>
     </div>

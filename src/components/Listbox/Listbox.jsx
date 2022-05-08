@@ -2,11 +2,16 @@ import { Fragment, useState } from 'react'
 import { Listbox as ListboxHeadlessUI, Transition } from '@headlessui/react'
 import styles from './Listbox.module.css'
 
-export function Listbox ({ options }) {
-  const [selected, setSelected] = useState(options[0] || { label: 'Select a device' })
+export function Listbox ({ options, onChange }) {
+  const [selected, setSelected] = useState(options[0])
+
+  const handleChange = (value) => {
+    setSelected(value)
+    if (onChange) onChange(value)
+  }
 
   return (
-    <ListboxHeadlessUI value={selected} onChange={setSelected}>
+    <ListboxHeadlessUI value={selected} onChange={handleChange}>
       <div className={styles.listboxConatiner}>
         <ListboxHeadlessUI.Button className={styles.button}>
           <span className={styles.buttonTitle}>{selected.label}</span>
