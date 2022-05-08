@@ -31,8 +31,8 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
   return (
     <div className={styles.configContainer}>
       <section style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <figure name='Edgar Lopez' className={styles.figureFallback}>
-          <video style={{ opacity: isVideoActive ? 1 : 0, borderRadius: 10, width: 440, aspectRatio: '3/2', objectFit: 'cover', backgroundColor: 'black' }} ref={refs.video} autoPlay />
+        <figure name={value} className={styles.figureFallback}>
+          <video ref={refs.video} style={{ opacity: isVideoActive ? 1 : 0, borderRadius: 10, width: 440, aspectRatio: '3/2', objectFit: 'cover', backgroundColor: 'black' }} autoPlay />
           <audio ref={refs.mic} autoPlay muted />
           <div className={styles.figureButtonsContainer}>
             <button className={`${styles.figureButtons} ${isMicActive || styles.figureButtonsDesactivate}`} onClick={() => actions.toggleActiveMic()}>

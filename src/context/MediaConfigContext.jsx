@@ -10,6 +10,10 @@ export const MediaConfigProvider = ({ children }) => {
     microphones: [],
     speakers: []
   })
+  const [streams, setStreams] = useState({
+    mic: null,
+    video: null
+  })
   const [testingAudio, setTestingAudio] = useState(false)
   const [micActive, setMicActive] = useState(false)
   const [videoActive, setVideoActive] = useState(false)
@@ -31,8 +35,9 @@ export const MediaConfigProvider = ({ children }) => {
     try {
       stopCurrentAudio()
       const stream = await getAudioStream(mic?.id)
+      setStreams(prev => ({ ...prev, mic: stream }))
       micRef.current.srcObject = stream
-      micRef.current.play()
+      micRef.current.play(micRef.current)
       setMicActive(true)
     } catch (e) {
       console.error(e)
@@ -62,6 +67,7 @@ export const MediaConfigProvider = ({ children }) => {
     try {
       stopCurrentVideo()
       const stream = await getVideoStream(video?.id)
+      setStreams(prev => ({ ...prev, video: stream }))
       videoRef.current.srcObject = stream
       videoRef.current.play()
       setVideoActive(true)
@@ -111,8 +117,10 @@ export const MediaConfigProvider = ({ children }) => {
     getMediaDevices().then(setMediaDevices)
   }, [setMediaDevices])
 
+  console.log('streams', streams)
   return (
     <MediaConfigContext.Provider value={{
+      streams,
       mediaDevices,
       isAudioTesting: testingAudio,
       isVideoActive: videoActive,

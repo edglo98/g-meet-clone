@@ -27,10 +27,15 @@ export function MeetingPage ({ room }) {
     })
   }, [])
 
-  console.log(room, participants)
-
   return (
     <div>
+      tunas
+      {room && (
+        <Participant
+          participant={room.localParticipant}
+        />
+      )}
+      los otros
       {participants.map(participant => (
         <li key={participant.sid}>
           <Participant participant={participant} />

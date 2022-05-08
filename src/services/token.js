@@ -15,11 +15,14 @@ export const getTwilioToken = async (userName, roomName) => {
   return await res.json()
 }
 
-export const getRoom = async (token, roomName) => {
-  const room = await connect(token, {
-    name: roomName,
-    video: true,
-    audio: true
-  })
-  return room
+export const getRoom = async ({ token, roomName, videoTrack, audioTrack }) => {
+  try {
+    const room = await connect(token, {
+      name: roomName,
+      tracks: [...audioTrack.getTracks(), ...videoTrack.getTracks()]
+    })
+    return room
+  } catch (error) {
+    console.log('error en connect', error)
+  }
 }
