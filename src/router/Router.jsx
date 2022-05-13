@@ -4,11 +4,9 @@ import { RedirectPage } from '../pages/Redirect/RedirectPage'
 
 export function Router () {
   return (
-    <div>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/:meetingId' element={<RedirectPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/:meetingId' element={<RedirectPage />} />
+    </Routes>
   )
 }

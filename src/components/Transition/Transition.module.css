@@ -1,0 +1,28 @@
+.enter {
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+  transition-delay: .2s;
+}
+
+.enterFrom {
+  transform: scale(.95);
+  opacity: 0;
+}
+
+.enterTo {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.leave {
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.leaveFrom {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.leaveTo {
+  transform: scale(.95);
+  opacity: 0;
+}

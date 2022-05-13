@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
+import { MeetingTools } from '../../components/MeetingTools/MeetingTools'
 import { Participant } from '../../components/Participant/Participant'
+import { MeetingReady } from '../../components/MeetingReady/MeetingReady'
+import { Button } from '../../components/Button/Button'
+import { MdHelpOutline } from 'react-icons/md'
+import styles from './MeetingPage.module.css'
 
-export function MeetingPage ({ room }) {
+export function MeetingPage ({ room, meetingId }) {
   const [participants, setParticipants] = useState([])
+  const [helpModal, setHelpModal] = useState(true)
 
   const participantConnected = participant => {
     setParticipants(prevParticipants => [...prevParticipants, participant])
@@ -28,19 +34,23 @@ export function MeetingPage ({ room }) {
   }, [])
 
   return (
-    <div>
-      tunas
-      {room && (
-        <Participant
-          participant={room.localParticipant}
-        />
-      )}
-      los otros
-      {participants.map(participant => (
-        <li key={participant.sid}>
-          <Participant participant={participant} />
-        </li>
-      ))}
+    <div className={styles.meetingContainer}>
+      <main className={styles.participantsContainer}>
+        {room && (
+          <Participant
+            participant={room.localParticipant}
+          />
+        )}
+        {participants.map(participant => (
+          <Participant key={participant.sid} participant={participant} />
+        ))}
+      </main>
+      {/* <MeetingChat /> */}
+      <MeetingTools room={room} />
+      <MeetingReady show={helpModal} onClose={() => setHelpModal(false)} meeting={meetingId} />
+      <div className={styles.helpButton}>
+        <Button styleType='text' title={<MdHelpOutline size={32} />} onClick={() => setHelpModal(true)} />
+      </div>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from './firebaseConfig'
 
 export const signUpWithEmail = async ({ email, password, name, username }) => {
@@ -30,4 +30,12 @@ export const signOutUser = async () => await auth.signOut()
 
 export const verifyUserAuth = (callback, errorCallback) => {
   return onAuthStateChanged(auth, callback, errorCallback)
+}
+
+export const addProvisionalUser = async (name) => {
+  const data = await addDoc(collection(db, 'users'), {
+    name,
+    createdAt: new Date()
+  })
+  return data
 }

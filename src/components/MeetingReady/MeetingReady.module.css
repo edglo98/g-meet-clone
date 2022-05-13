@@ -1,0 +1,23 @@
+.container {
+  background-color: white;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--dark-highlight);
+  border: none;
+}

@@ -1,7 +1,7 @@
 import { Router } from './router/Router'
-import './App.css'
 import { AuthProvider } from './context/AuthContext'
 import { MediaConfigProvider } from './context/MediaConfigContext'
+import './App.css'
 import './services/firebaseConfig'
 
 function App () {

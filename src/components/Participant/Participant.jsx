@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import styles from './Participant.module.css'
+import { motion } from 'framer-motion'
 
 export function Participant ({ participant, muted }) {
   const [videoTracks, setVideoTracks] = useState([])
   const [audioTracks, setAudioTracks] = useState([])
+  const [videoVisibility, setVideoVisibility] = useState(true)
 
   const videoRef = useRef()
   const audioRef = useRef()
@@ -33,7 +36,18 @@ export function Participant ({ participant, muted }) {
 
     participant.on('trackSubscribed', trackSubscribed)
     participant.on('trackUnsubscribed', trackUnsubscribed)
-
+    participant.on('trackEnabled', track => {
+      if (track.kind === 'video') {
+        setVideoVisibility(true)
+      }
+      // show the track again
+    })
+    participant.on('trackDisabled', track => {
+      if (track.kind === 'video') {
+        setVideoVisibility(false)
+      }
+      // hide or remove the media element related to this track
+    })
     return () => {
       setVideoTracks([])
       setAudioTracks([])
@@ -62,10 +76,18 @@ export function Participant ({ participant, muted }) {
   }, [videoTracks])
 
   return (
-    <div className='participant'>
-      <h3>{participant.identity}</h3>
-      <video ref={videoRef} autoPlay />
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{
+        delay: 0.6,
+        duration: 0.15,
+        ease: 'easeInOut'
+      }}
+      className={styles.participant}
+    >
+      <video style={{ opacity: videoVisibility ? 1 : 0 }} ref={videoRef} autoPlay />
       <audio ref={audioRef} autoPlay muted={muted} />
-    </div>
+    </motion.div>
   )
 }

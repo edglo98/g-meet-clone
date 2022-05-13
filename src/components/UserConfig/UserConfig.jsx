@@ -6,8 +6,8 @@ import { useAuth } from '../../hooks/useAuth'
 import { useSimpleInput } from '../../hooks/useSimpleInput'
 import styles from './UserConfig.module.css'
 import { useNavigate } from 'react-router-dom'
-import { uid } from 'uid'
 import { useTwilioToken } from '../../hooks/useTwilioToken'
+import { addProvisionalUser } from '../../services/auth'
 
 export const UserConfig = ({ setMeetingToken, meetingId }) => {
   const navigate = useNavigate()
@@ -23,7 +23,14 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
   const { value, handleChange } = useSimpleInput(user?.name || '')
   const { loading, handleGetToken } = useTwilioToken()
   const handleCreateToken = async () => {
-    const userIdentity = user ? user.uid : uid()
+    let userIdentity
+    if (!value) return
+    if (user?.uid) {
+      userIdentity = user.uid
+    } else {
+      const data = await addProvisionalUser(value)
+      userIdentity = data.id
+    }
     const token = await handleGetToken(userIdentity, meetingId)
     setMeetingToken(token)
   }
@@ -50,8 +57,7 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
           <h4 style={{ fontWeight: 400, textAlign: 'center' }}>Midu podría estar esperandote...</h4>
         </header>
         <div>
-          {/* este es el nombre, hay que generar un id anonimo para que se pueda unir */}
-          <TextInput icon='🏷' placeholder='Tu nombre' value={value} onChange={handleChange} />
+          <TextInput disabled={user?.uid} icon='🏷' placeholder='Tu nombre' value={value} onChange={handleChange} />
         </div>
         <div>
           <h5 style={{ margin: 0 }}>Micrófono</h5>
@@ -81,7 +87,7 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button onClick={() => navigate('/')} title='Volver al inicio' styleType='text' />
           {/* perdoname si ves el &nbsp; midu xd u otra cosa... */}
-          <Button disabled={loading} onClick={handleCreateToken} title={<h4 style={{ margin: 0 }}>🛎 &nbsp;Unirme ahora</h4>} />
+          <Button disabled={loading || !value} onClick={handleCreateToken} title={<h4 style={{ margin: 0 }}>🛎 &nbsp;Unirme ahora</h4>} />
         </div>
       </section>
     </div>

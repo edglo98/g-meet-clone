@@ -2,7 +2,7 @@ import { InputAlert } from '../InputAlert/InputAlert'
 import styles from './TextInput.module.css'
 
 export function TextInput (props) {
-  const { password, error, icon, placeholder, value, onChange, register } = props
+  const { password, error, icon, placeholder, value, onChange, disabled, register } = props
   return (
     <div>
       <label className={styles.inputContainer}>
@@ -19,6 +19,7 @@ export function TextInput (props) {
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          disabled={disabled}
           {...register}
         />
         <span className={`${styles.highlighting} ${error ? styles.error : null}`} />

@@ -1,0 +1,30 @@
+.meetingContainer {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--dark-highlight);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.participantsContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.helpButton {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  cursor: pointer;
+}

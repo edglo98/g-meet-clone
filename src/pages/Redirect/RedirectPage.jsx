@@ -18,7 +18,7 @@ export function RedirectPage () {
   if (loading || loadingAuthData) {
     return <div>Loading...</div>
   } else if (room) {
-    return <MeetingPage room={room} />
+    return <MeetingPage room={room} meetingId={meetingId} />
   } else {
     return <LobbyPage meetingId={meetingId} setMeetingToken={setMeetingToken} />
   }
