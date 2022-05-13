@@ -117,7 +117,6 @@ export const MediaConfigProvider = ({ children }) => {
     getMediaDevices().then(setMediaDevices)
   }, [setMediaDevices])
 
-  console.log('streams', streams)
   return (
     <MediaConfigContext.Provider value={{
       streams,

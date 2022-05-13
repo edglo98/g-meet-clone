@@ -2,8 +2,26 @@
   width: 100%;
   max-width: 345px;
   display: flex;
-  border-radius: 6px;
+  border-radius: 10px;
   overflow: hidden;
+  position: relative;
+}
+
+.participant::after {
+  content: attr(name);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  color: white;
 }
 
 .participant video {
@@ -15,4 +33,23 @@
   font-size: 1.2rem;
   margin: 0;
   padding: 0;
+}
+
+.videoDisplayName {
+  content: attr(name);
+  position: absolute;
+  height: 14%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.403);
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  color: white;
+  z-index: 11;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }

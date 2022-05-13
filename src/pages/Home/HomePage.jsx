@@ -21,6 +21,11 @@ export function HomePage () {
     setValue(e.target.value)
   }
 
+  const handleRedirect = () => {
+    const id = value.replace('https://g-meet-clone.vercel.app/', '')
+    navigate('/' + id)
+  }
+
   const createMeetings = async () => {
     if (!user) {
       actions.openModal()
@@ -78,6 +83,7 @@ export function HomePage () {
               icon='⌨️'
             />
             <Button
+              onClick={handleRedirect}
               title={
                 <h4 style={{ margin: 0 }}>
                   Entrar

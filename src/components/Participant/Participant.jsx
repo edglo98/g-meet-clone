@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import styles from './Participant.module.css'
 import { motion } from 'framer-motion'
+import styles from './Participant.module.css'
 
 export function Participant ({ participant, muted }) {
   const [videoTracks, setVideoTracks] = useState([])
@@ -85,8 +85,12 @@ export function Participant ({ participant, muted }) {
         ease: 'easeInOut'
       }}
       className={styles.participant}
+      name={participant.name || 'Tú'}
     >
       <video style={{ opacity: videoVisibility ? 1 : 0 }} ref={videoRef} autoPlay />
+      <span name={participant.name || 'Tú'} className={styles.videoDisplayName} style={{ opacity: videoVisibility ? 1 : 0 }}>
+        {participant.name || 'Tú'}
+      </span>
       <audio ref={audioRef} autoPlay muted={muted} />
     </motion.div>
   )
