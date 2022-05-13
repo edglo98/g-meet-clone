@@ -4,10 +4,20 @@ import { TextInput } from '../TextInput/TextInput'
 import { useMediaConfig } from '../../hooks/useMediaConfig'
 import { useAuth } from '../../hooks/useAuth'
 import { useSimpleInput } from '../../hooks/useSimpleInput'
-import styles from './UserConfig.module.css'
 import { useNavigate } from 'react-router-dom'
 import { useTwilioToken } from '../../hooks/useTwilioToken'
 import { addProvisionalUser } from '../../services/auth'
+import {
+  MdOutlineAdd,
+  MdVolumeUp,
+  MdVolumeOff,
+  MdAccountCircle,
+  MdOutlineMicOff,
+  MdOutlineMic,
+  MdOutlineVideocamOff,
+  MdOutlineVideocam
+} from 'react-icons/md'
+import styles from './UserConfig.module.css'
 
 export const UserConfig = ({ setMeetingToken, meetingId }) => {
   const navigate = useNavigate()
@@ -42,11 +52,11 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
           <video ref={refs.video} style={{ opacity: isVideoActive ? 1 : 0, borderRadius: 10, width: 440, aspectRatio: '3/2', objectFit: 'cover', backgroundColor: 'black' }} autoPlay />
           <audio ref={refs.mic} autoPlay muted />
           <div className={styles.figureButtonsContainer}>
-            <button className={`${styles.figureButtons} ${isMicActive || styles.figureButtonsDesactivate}`} onClick={() => actions.toggleActiveMic()}>
-              📞
+            <button onClick={() => actions.toggleActiveMic()} className={`${styles.button} ${!isMicActive && styles.buttonDanger}`}>
+              {!isMicActive ? <MdOutlineMicOff /> : <MdOutlineMic />}
             </button>
-            <button className={`${styles.figureButtons} ${isVideoActive || styles.figureButtonsDesactivate}`} onClick={() => actions.toggleActiveVideo()}>
-              📹
+            <button onClick={() => actions.toggleActiveVideo()} className={`${styles.button} ${!isVideoActive && styles.buttonDanger}`}>
+              {!isVideoActive ? <MdOutlineVideocamOff /> : <MdOutlineVideocam />}
             </button>
           </div>
         </figure>
@@ -57,7 +67,7 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
           <h4 style={{ fontWeight: 400, textAlign: 'center' }}>Midu podría estar esperandote...</h4>
         </header>
         <div>
-          <TextInput disabled={user?.uid} icon='🏷' placeholder='Tu nombre' value={value} onChange={handleChange} />
+          <TextInput disabled={user?.uid} icon={<MdAccountCircle size={24} />} placeholder='Tu nombre' value={value} onChange={handleChange} />
         </div>
         <div>
           <h5 style={{ margin: 0 }}>Micrófono</h5>
@@ -76,8 +86,8 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
             <Button
               onClick={() => actions.toggleTestingAudio()}
               title={
-                <span style={{ margin: 0, fontSize: '.8rem' }}>
-                  {isAudioTesting ? '🔇' : '🔊'}
+                <span style={{ margin: 0, fontSize: '.8rem', color: 'gray' }}>
+                  {isAudioTesting ? <MdVolumeOff size={22} /> : <MdVolumeUp size={22} />}
                 </span>
                   }
               styleType='text'
@@ -87,7 +97,16 @@ export const UserConfig = ({ setMeetingToken, meetingId }) => {
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button onClick={() => navigate('/')} title='Volver al inicio' styleType='text' />
           {/* perdoname si ves el &nbsp; midu xd u otra cosa... */}
-          <Button disabled={loading || !value} onClick={handleCreateToken} title={<h4 style={{ margin: 0 }}>🛎 &nbsp;Unirme ahora</h4>} />
+          <Button
+            disabled={loading || !value}
+            onClick={handleCreateToken}
+            title={
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <MdOutlineAdd size={20} />
+                <h4 style={{ margin: 0 }}> &nbsp;Unirme ahora</h4>
+              </span>
+            }
+          />
         </div>
       </section>
     </div>

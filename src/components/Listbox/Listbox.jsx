@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react'
 import { Listbox as ListboxHeadlessUI, Transition } from '@headlessui/react'
+import { MdOutlineDone, MdOutlineExpandMore } from 'react-icons/md'
 import styles from './Listbox.module.css'
 
 export function Listbox ({ options, onChange }) {
@@ -16,7 +17,7 @@ export function Listbox ({ options, onChange }) {
         <ListboxHeadlessUI.Button className={styles.button}>
           <span className={styles.buttonTitle}>{selected.label}</span>
           <span className={styles.icon}>
-            👇🏼
+            <MdOutlineExpandMore />
           </span>
         </ListboxHeadlessUI.Button>
         <Transition
@@ -45,7 +46,7 @@ export function Listbox ({ options, onChange }) {
                     {selected
                       ? (
                         <span className={styles.checkIcon}>
-                          ✔
+                          <MdOutlineDone />
                         </span>
                         )
                       : null}

@@ -35,3 +35,7 @@
 .input:focus + .highlighting {
   border: 2px solid var(--midu-azul);
 }
+
+.icon {
+  line-height: 1;
+}

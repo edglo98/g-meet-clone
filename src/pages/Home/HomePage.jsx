@@ -9,6 +9,7 @@ import { Login } from '../../components/Login/Login'
 import { TextInput } from '../../components/TextInput/TextInput'
 import { useAuth } from '../../hooks/useAuth'
 import { useTwilioToken } from '../../hooks/useTwilioToken'
+import { MdOutlineAddBox, MdBorderColor } from 'react-icons/md'
 import styles from './HomePage.module.css'
 
 export function HomePage () {
@@ -54,9 +55,12 @@ export function HomePage () {
         <div className={styles.meetingOptions}>
           <Dropdown
             title={
-              <h3 style={{ margin: 0 }}>
-                📹 Nueva reunión
-              </h3>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <MdOutlineAddBox size={24} />
+                <h3 style={{ margin: 0 }}>
+                  Nueva reunión
+                </h3>
+              </span>
             }
           >
             <DropdownItem
@@ -80,7 +84,7 @@ export function HomePage () {
               onChange={onChange}
               placeholder='Introduce un código o enlace'
               value={value}
-              icon='⌨️'
+              icon={<MdBorderColor />}
             />
             <Button
               onClick={handleRedirect}
